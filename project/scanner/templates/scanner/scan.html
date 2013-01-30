@@ -1,0 +1,247 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+{% extends "scanner_base.html" %}
+
+{% block menu %}
+    <li><a href="/">Home</a></li>
+    <li><a href="/new">New Scan</a></li>
+    <li class="active"><a href="/myscans">My Scans</a></li>
+    <li><a href="/plans">Plans</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+    <h1>Scan Results</h1>
+    </div>
+    
+    {% if error %}
+        <div class="alert alert-error"><strong>Error</strong><br/>{{ error }}</div>
+    {% else %}
+        <div id="errors_warnings">
+            <table class="table table-risk-counters">
+                <tr>
+                    <td>
+                        <div class="alert alert-block alert-high">
+                            <span class="warning_text" id="num_high_risk">{{num_high}}</span><br/>
+                            High Risk
+                        </div>
+                    </td>
+                    <td>
+                        <div class="alert alert-block alert-medium">
+                            <span class="warning_text" id="num_medium_risk">{{num_med}}</span><br/>
+                            Medium Risk
+                        </div>
+                    </td>
+                    <td>
+                        <div class="alert alert-block alert-low">
+                            <span class="warning_text" id="num_low_risk">{{num_low}}</span><br/>
+                            Low Risk
+                        </div>
+                    </td>
+                    <td>
+                        <div class="alert alert-block alert-informational">
+                            <span class="warning_text" id="num_info_risk">{{num_info}}</span><br/>
+                            Informational
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        {% if results['state'] != 'FINISHED' and results['state'] != 'STOPPED' %}
+	<div id="live-status">
+            <script src="{{ static('scanner/js/plugin_results_expand.js') }}"></script>
+            <div id="overall_plugin_results_expander">
+                Overall Progress (click to see progress of individual plugins)
+                <div class="progress progress-info progress-striped">
+                    <div id="overall_progress" class="bar" style="width: 0%;"></div>
+                </div>
+            </div>
+            <div id="plugin_results_area">
+                {% for session in results['sessions'] %}
+                    {{session.plugin.name}}
+                    <div class="plugin_result">
+                        <div id="{{session.id}}_prog" class="progress progress-info progress-striped">
+                            <div id="{{session.id}}" class="bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+	</div>
+        {% endif %}
+        
+        <script src="{{ static('scanner/js/table_info_expand.js') }}"></script>
+
+        <table class="table table-bordered table-info">
+        <thead class="info_table_expander">
+            <tr>
+                <th>
+                    <h2><span class="plus_minus">+</span> Scan Information</h2>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="info_table_area">
+            <tr>
+            <td>
+		        <table class="table table-bordered table-striped">
+		            <tbody>
+		                <tr>
+		                    <th>Current Status:</th>
+		                    <td>
+				        <span id="scan_status_label">
+		                        {% if results['state'] == 'FINISHED' %}
+		                        Scan is finished running.
+					{% elif results['state'] == 'STOPPING' %}
+					Scan is stopping.
+					{% elif results['state'] == 'STOPPED' %}
+					Scan has been stopped.
+		                        {% elif results['state'] == 'STARTED' %}
+		                        Scan is currently running ...
+		                        {% elif results['state'] == 'FAILED' %}
+		                        Scan has finished with failures.
+		                        {% endif %}
+					</span>
+					{% if results['state'] == 'STARTED' %}
+					<span id="cancel-scan-button-container" style="{float:right}"><a id="cancel-scan-button" class="btn btn-mini btn-primary">Cancel</a></span>
+					{% endif %}
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <th>URL Scanned:</th>
+		                    <td>{{results['configuration']['target']}}</td>
+		                </tr>
+		                <tr>
+		                    <th>Plan Selected:</th>
+		                    <td>{{results['plan']['name']}}</td>
+		                </tr>
+		                <tr>
+		                    <th>Scan ID:</th>
+		                    <td>{{results['id']}}</td>
+		                </tr>
+		            </tbody>
+		        </table>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+        
+        <script src="{{ static('scanner/js/table_details_expand.js') }}"></script>
+        <script src="{{ static('scanner/js/table_results_expand.js') }}"></script>
+        
+        <table class="table table-bordered table-details">
+        <thead class="details_table_expander">
+            <tr>
+                <th>
+                    <h2><span class="plus_minus">-</span> Detailed Results</h2>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="details_table_area">
+            <tr>
+            <td>
+		        <table class="table table-bordered table-striped">
+		            <thead>
+		                <tr>
+		                    <th style="width: 100px">Severity</th>
+		                    <th style="width: 150px !important;">Plugin Source</th>
+		                    <th>Risk Summary</th>
+		                </tr>
+		            </thead>
+		            <tbody id="results_table_tbody">
+		                {% for session in results.sessions %}
+		                    {% for issue in session.issues%}
+		                        <tr>
+		                            <td>
+        				                <div class="severity alert-{{ issue['Severity'].lower()}}">
+		                            	{{ issue['Severity'] }}
+                        				</div>
+		                            </td>
+		                            <td>{{session['plugin']['name']}}</td>
+		                            <td>
+		                                <table class="table table-bordered table-results">
+		                                <thead class="results_table_expander">
+		                                    <tr>
+		                                        <th colspan="2">
+		                                            <span class="plus_minus">+</span> {{issue['Summary']}}
+		                                        </th>
+		                                    </tr>
+		                                </thead>
+		                                <tbody class="results_table_area">
+		                                    {% for key in issue %}
+		            	                        {% if key == '_time' %}
+		            	                        {% elif key == 'URLs' %}
+		                                        	<tr>
+			                                            <td>{{key}}</td>
+		                                            	<td>	
+                                                                          <ul>
+					                                    {% for url in issue[key] %}
+				                                            <li><a href="{{url}}">{{url}}</a></li>
+					                                    {% endfor %}
+                                                                          </ul>
+				            	                        {% if issue[key]|length >= 25 %}
+					                                    	<p>... more similar results omitted ... </p>
+											        	{% endif %}
+		                                            	</td>
+		                                        	</tr>
+		        	                            {% else %}
+		                                        	<tr>
+			                                            <td>{{key}}</td>
+		                                            	<td>{{issue[key]}}</td>
+		                                        	</tr>
+									        	{% endif %}
+		                                    {% endfor %}
+		                                </tbody>
+		                                </table>
+		                            </td>
+		                        </tr>
+		                    {% endfor %}
+		                {% endfor %}
+		                
+		            </tbody>
+		        </table>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+
+        {% if results['state'] == 'FINISHED' or results['state'] == 'STOPPED' %}
+
+        <table class="table table-bordered table-details">
+        <thead class="details_table_expander">
+            <tr>
+                <th>
+                    <h2><span class="plus_minus">+</span> Scan Artifacts</h2>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="details_table_area">
+          {% for session in results.sessions %}
+            {% if session.artifacts %}
+              <tr>
+                <td>{{session.plugin.name}} ({{session.plugin.version}})</td>
+                <td><a class="btn btn-info" href="/scan/{{results.id}}/session/{{session.id}}/artifacts">Download</a></td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+        </table>
+
+        {% endif %}
+                
+        {% if not finished %}
+            <script type="text/javascript">
+                var scan_id = "{{results['id']|escapejs}}";
+                var csrfmiddlewaretoken = "{{csrf_token|escapejs}}";
+            </script>
+            <script src="{{ static('scanner/js/live_results_update.js') }}"></script>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+{% block footer %}
+    
+{% endblock %}

@@ -1,0 +1,39 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+{% extends "scanner_base.html" %}
+
+{% block menu %}
+    <li class="active"><a href="/">Home</a></li>
+    <li><a href="/new">New Scan</a></li>
+    <li><a href="/myscans">My Scans</a></li>
+    <li><a href="/plans">Plans</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+    <h1>Welcome</h1>
+    </div>
+    <p>The scanner is designed to bridge the gap between developers and security by allowing project development teams to scan their applications while they
+    are still in development. This allows security flaws to be detected at the earliest stages and also introduces the team and project to the security
+    lifecycle at the earliest point.</p>
+    <p>To begin, either start a new project by clicking "New Scan" or open details about a previously used project or group project.</p>
+{% endblock %}
+
+{% block footer %}
+    
+{% endblock %}
+
+{% block site_js %}
+    {% compress js %}
+    <script src="{{ static('scanner/js/libs/jquery-1.4.4.min.js') }}"></script>
+    <script src="{{ static('scanner/js/libs/jquery.cookie.js') }}"></script>
+    <script src="{{ static('scanner/js/init.js') }}"></script>
+    {% endcompress %}
+    {% if not request.user.is_active %}
+        {{ browserid_form.media }}
+    {% endif %}
+{% endblock %}

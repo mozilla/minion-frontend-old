@@ -1,0 +1,17 @@
+<h4>Plan details</h4>
+<p>{{plan.description}}</p>
+<h4>The following plugins will be executed as part of the plan</h4>
+<table class="table table-bordered">
+  <tr>
+    <th>Plugin Name</th>
+    <th>Plugin Version</th>
+    <th>Description</th>
+  </tr>
+  {% for workflow_step in plan.workflow %}
+  <tr>
+    <td>{{workflow_step.plugin.name}}</td>
+    <td>{{workflow_step.plugin.version}}</td>
+    <td>{{workflow_step.description or "-"}}</td>
+  </tr>
+  {% endfor %}
+</table>

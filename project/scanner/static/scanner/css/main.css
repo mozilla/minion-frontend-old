@@ -1,0 +1,177 @@
+/*
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*/
+
+/* An example CSS file that will be minified. */
+body {
+    margin: 0px;
+    font-family: sans-serif;
+    /*background-image: url('../img/grain_dark.png');*/
+    background-repeat: repeat;
+    
+}
+
+/* Risk Box link styles */
+.risk_boxes a:link { color: #FFFFFF; text-decoration: none; }
+.risk_boxes a:active { color: #FFFFFF; text-decoration: none; }
+.risk_boxes a:hover { color: #FFFFFF; text-decoration: none; }
+.risk_boxes a:visited { color: #FFFFFF; text-decoration: none; }
+
+
+/* MAIN PAGE CONTENT - Styles that affect all templates go here */
+.center_1000 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+#main_page {
+    
+}
+
+/* The box that appears to float above darker background with lighter background itself */
+#lighter_box {
+    /*background-image: url('../img/grain_light.png');*/
+    /*border-top: 1px solid #BDC2C5;
+    border-bottom: 1px solid #A0A4A7;*/
+    padding: 5px;
+}
+
+/* Message telling signed-out users to please log in on homepage */
+#please_sign_in {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 300;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#browserid_form_hider {
+    display: none;
+}
+
+/* NEW SCAN PAGE CONTENT */
+#new_scan_enter_url {
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+#new_scan_url_input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 80%;
+    font-size: 20px;
+    border: 1px solid #BDC2C5;
+}
+
+#plan_dropdown {
+    margin-bottom: 10px;
+}
+
+#text_below_plan_dropdown {
+    margin: -10px 0 10px 0;
+    font-size: .8em;
+}
+
+#new_scan_advanced_options_expander {
+    margin-top: 40px;
+    font-size: small;
+    padding-left: 15px;
+    cursor: pointer;
+}
+
+#plugin_results_area {
+    padding-left: 50px;
+}
+
+#updating_results {
+    width: 100%;
+    height: 300px;
+    border: 0px;
+}
+
+#errors_warnings {
+    text-align: center;
+}
+
+.table-risk-counters {
+    margin-bottom: 0px !important;
+}
+
+.table-risk-counters tr td {
+    text-align: center;
+    width: 25%;
+    margin-bottom: 0px !important;
+    border: none !important;
+}
+
+.warning_text {
+    font-size: 40px;
+}
+
+.alert-high {
+    background-color: #cd0200 !important;
+}
+
+.alert-medium {
+    background-color: #d47500 !important;
+}
+
+.alert-low {
+    background-color: #FEC901 !important;
+    border: 1px solid #C2A939 !important;
+}
+
+.alert-informational {
+    background-color: #3399f3 !important;
+    border: 1px solid #0D4D6F !important;
+}
+
+#overall_plugin_results_expander {
+    cursor: pointer;
+}
+
+.table-results {
+    cursor: pointer;
+    margin: 3px !important;
+    background-color: inherit !important;
+}
+
+.table-results:hover {
+    background-color: #F9F9F9;
+}
+
+.table-results tbody tr td, .table-results tbody tr th, .table-results thead th {
+    background-color: inherit !important;
+}
+
+.severity {
+  padding: 0px 25px 0px 14px;
+  margin-bottom: 21px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #d47500;
+  border: 1px solid #c54c00;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+/* MYSCANS PAGE */
+.myscan_table_url {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* FOOTER STYLES */
+#footer {
+    text-align: center;
+    margin-top: 10px;
+    font-family: "Open Sans","Helvetica Neue",Arial,sans-serif;
+    font-weight: 300;
+    font-size: .8em;
+}

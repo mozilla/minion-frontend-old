@@ -1,0 +1,53 @@
+<!--
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+{% extends "scanner_base.html" %}
+
+{% block menu %}
+    <li><a href="/">Home</a></li>
+    <li class="active"><a href="/new">New Scan</a></li>
+    <li><a href="/myscans">My Scans</a></li>
+    <li><a href="/plans">Plans</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+    <h1>New Scan</h1>
+    </div>
+    {% if error %}
+        <div class="alert alert-error"><strong>Error</strong><br/>{{ error }}</div>
+    {% else %}
+            {% if error_retry %}
+                <div class="alert alert-error"><strong>Error</strong><br/>{{ error_retry }}</div>
+            {% endif %}
+            <script src="{{ static('scanner/js/new_scan_expand.js') }}"></script>
+            <script src="{{ static('scanner/js/plan_details.js') }}"></script>
+            <form class="form-horizontal well" method="POST" action="">
+                <div id="new_scan_enter_url">
+                    <input name="new_scan_url_input" id="new_scan_url_input" type="text" placeholder="Enter URL to scan..."/><br/>
+                    <select name="plan_selection" id="plan_dropdown">
+                        <option>Select a plan...</option>
+                        {% for plan in plans %}
+                            <option id="{{ plan.name }}">{{ plan.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="text_below_plan_dropdown">
+                        <a href="/plans">View available plans</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Start Scan</button>
+                </div>
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            </form>
+
+            <div id="plan-details"></div>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block footer %}
+    
+{% endblock %}
